@@ -81,13 +81,13 @@ The analysis included:
 
 The class distribution illustrates the significant imbalance between legitimate and fraudulent transactions.
 
-![Transaction Class Distribution](Transaction%20Class%20Distribution.jpg)
+![Transaction Class Distribution](<Transaction Class Distribution.jpg>)
 
 ### Transaction Amount vs Time
 
 Transaction amount and time were analysed to explore patterns within the transaction data.
 
-![Amount Vs Time](Amount%20Vs%20Time.jpg)
+![Amount Vs Time](<Amount Vs Time.jpg>)
 
 ---
 
