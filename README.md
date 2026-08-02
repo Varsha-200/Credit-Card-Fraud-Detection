@@ -218,13 +218,13 @@ The project explored several characteristics of the transaction dataset, includi
 
 <!-- Add transaction-class-distribution.png here -->
 
-![Transaction Class Distribution](transaction-class-distribution.png)
+![Transaction Class Distribution](transaction-class-distribution.jpg)
 
 ### Transaction Amount vs Time
 
 <!-- Add amount-vs-time.png here -->
 
-![Amount vs Time](amount-vs-time.png)
+![Amount vs Time](amount-vs-time.jpg)
 
 ---
 
