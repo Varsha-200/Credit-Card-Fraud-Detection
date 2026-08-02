@@ -1,6 +1,6 @@
 # 💳 Credit Card Fraud Detection Using Machine Learning
 
-A machine learning project for detecting fraudulent credit card transactions by comparing multiple classification algorithms and addressing the challenges of highly imbalanced financial transaction data.
+A machine learning project for detecting fraudulent credit card transactions by comparing multiple classification algorithms and addressing the challenges of highly imbalanced transaction data.
 
 This project was developed as part of the **Intel Unnati Program**.
 
@@ -8,11 +8,20 @@ This project was developed as part of the **Intel Unnati Program**.
 
 ## 📌 Overview
 
-Credit card fraud is a significant challenge for financial institutions because fraudulent transactions represent only a very small proportion of overall transactions.
+Credit card fraud presents a significant challenge to financial institutions and consumers as fraudulent transactions represent only a small proportion of overall financial transactions.
 
-This project explores the use of machine learning to distinguish fraudulent transactions from legitimate ones. Multiple classification algorithms were trained and evaluated, with particular attention given to handling class imbalance and comparing model performance using precision, recall, F1-score, accuracy, and RMSE.
+This project explores the application of machine learning to classify credit card transactions as **legitimate or fraudulent**.
 
-Among the evaluated models, **Random Forest provided the strongest overall fraud-detection performance** in the reported experiments.
+Four machine learning algorithms were trained and compared:
+
+- Logistic Regression
+- Random Forest
+- Decision Tree
+- Support Vector Machine (SVM)
+
+To address the highly imbalanced nature of the dataset, **SMOTE (Synthetic Minority Over-sampling Technique)** was applied to the training data.
+
+Based on the experimental results, **Random Forest demonstrated the strongest overall performance for detecting fraudulent transactions**.
 
 ---
 
@@ -22,10 +31,11 @@ The main objectives of this project were to:
 
 - Analyse credit card transaction data
 - Identify patterns associated with fraudulent transactions
-- Preprocess and prepare transaction data for machine learning
-- Address class imbalance using oversampling
+- Perform exploratory data analysis and preprocessing
+- Address class imbalance using SMOTE
 - Train multiple classification models
-- Compare model performance using appropriate evaluation metrics
+- Evaluate models using appropriate performance metrics
+- Compare model performance
 - Identify the most effective model for fraud detection
 
 ---
@@ -38,8 +48,8 @@ The project uses the **Credit Card Fraud Detection dataset from Kaggle**.
 
 - **284,807 transactions**
 - **31 features**
-- Contains both legitimate and fraudulent transactions
-- Includes transaction **Time** and **Amount**
+- Contains legitimate and fraudulent transactions
+- Includes transaction `Time` and `Amount`
 - Other transaction features are anonymized
 - Target variable: `Class`
 
@@ -54,56 +64,89 @@ A major challenge with this dataset is the significant imbalance between legitim
 
 ---
 
-## 🔄 Machine Learning Workflow
+## 📊 Exploratory Data Analysis
+
+Exploratory Data Analysis (EDA) was performed to understand the characteristics and distribution of the transaction data before model training.
+
+The analysis included:
+
+- Transaction class distribution
+- Fraudulent vs legitimate transactions
+- Transaction amount analysis
+- Transaction time analysis
+- Amount vs time relationships
+- Feature correlation analysis
+
+### Transaction Class Distribution
+
+The class distribution illustrates the significant imbalance between legitimate and fraudulent transactions.
+
+![Transaction Class Distribution](Transaction%20Class%20Distribution.jpg)
+
+### Transaction Amount vs Time
+
+Transaction amount and time were analysed to explore patterns within the transaction data.
+
+![Amount Vs Time](Amount%20Vs%20Time.jpg)
+
+---
+
+## ⚙️ Machine Learning Workflow
 
 ```text
 Credit Card Transaction Dataset
-              ↓
-      Exploratory Data Analysis
-              ↓
+              │
+              ▼
+    Exploratory Data Analysis
+              │
+              ▼
        Data Preprocessing
-              ↓
-      Train / Test Split
-              ↓
-     Class Imbalance Handling
-           (SMOTE)
-              ↓
-      Model Training
-              ↓
- ┌────────────┼─────────────┐
- ↓            ↓             ↓
-Logistic    Random       Decision
-Regression  Forest         Tree
-              ↓
-             SVM
-              ↓
+              │
+              ▼
+       Train / Test Split
+           (80 / 20)
+              │
+              ▼
+      SMOTE Oversampling
+              │
+              ▼
+        Model Training
+              │
+   ┌──────────┼──────────┬──────────┐
+   ▼          ▼          ▼          ▼
+Logistic    Random    Decision     SVM
+Regression  Forest      Tree
+   │          │          │          │
+   └──────────┴──────────┴──────────┘
+              │
+              ▼
        Model Evaluation
-              ↓
+              │
+              ▼
  Accuracy | Precision | Recall
-       F1-Score | RMSE
-              ↓
-      Model Comparison
-              ↓
-       Random Forest
-      Selected as Best
+      F1-Score | RMSE
+              │
+              ▼
+       Model Comparison
+              │
+              ▼
+        Random Forest
 ```
 
 ---
 
 ## 🧹 Data Preprocessing
 
-Several preprocessing steps were performed before model training.
-
 ### Missing Values
 
-The dataset was inspected for missing values and prepared before training.
+The dataset was inspected for missing values and prepared before model training.
 
 ### Train-Test Split
 
-The data was divided into training and testing datasets using an **80/20 split**.
+The dataset was divided into **80% training data and 20% testing data**.
 
 ```python
-train_test_split(
+X_train, X_test, y_train, y_test = train_test_split(
     X,
     y,
     test_size=0.2,
@@ -113,9 +156,9 @@ train_test_split(
 
 ### Handling Class Imbalance
 
-Fraudulent transactions are significantly less frequent than legitimate transactions.
+Fraudulent transactions occur much less frequently than legitimate transactions.
 
-To address this problem, the project used **SMOTE (Synthetic Minority Over-sampling Technique)** on the training data.
+To address this imbalance, **SMOTE** was applied to the training dataset.
 
 ```python
 smote = SMOTE(random_state=42)
@@ -126,29 +169,27 @@ X_train_balanced, y_train_balanced = smote.fit_resample(
 )
 ```
 
-This creates additional synthetic samples of the minority fraud class to provide the models with a more balanced training dataset.
+This generates synthetic samples of the minority fraud class to create a more balanced training dataset.
 
 ---
 
 ## 🤖 Machine Learning Models
 
-Four classification algorithms were evaluated.
-
 ### 1. Logistic Regression
 
-Used as a baseline binary classification model for predicting legitimate and fraudulent transactions.
+Used as a binary classification model for predicting whether transactions are legitimate or fraudulent.
 
 ### 2. Random Forest Classifier
 
-An ensemble learning approach that combines multiple decision trees to improve classification performance.
+An ensemble learning algorithm that combines multiple decision trees to improve classification performance.
 
 ### 3. Decision Tree
 
-A tree-based classifier that recursively separates the feature space according to learned decision rules.
+A tree-based classification algorithm that learns decision rules from transaction features.
 
 ### 4. Support Vector Machine (SVM)
 
-A Support Vector Machine with a **linear kernel** was used to identify a separating hyperplane between transaction classes.
+A Support Vector Machine using a **linear kernel** was evaluated for transaction classification.
 
 ---
 
@@ -156,14 +197,14 @@ A Support Vector Machine with a **linear kernel** was used to identify a separat
 
 The models were compared using:
 
-- **Accuracy**
-- **Precision**
-- **Recall**
-- **F1-Score**
-- **RMSE**
-- **Processing Time**
+- Accuracy
+- Precision
+- Recall
+- F1-Score
+- RMSE
+- Processing Time
 
-For fraud detection, metrics such as **precision and recall are particularly important** because overall accuracy can be misleading when the dataset is highly imbalanced.
+For highly imbalanced problems such as fraud detection, **precision, recall and F1-score are particularly important**, as overall accuracy alone may not accurately represent fraud-class performance.
 
 ---
 
@@ -191,73 +232,56 @@ For fraud detection, metrics such as **precision and recall are particularly imp
 
 ## 🏆 Model Comparison
 
-Although several models achieved very high overall accuracy, their ability to correctly identify the minority **fraud class** differed considerably.
+Although several models achieved high overall accuracy, their ability to identify the minority **fraud class** differed considerably.
 
-**Random Forest was selected as the strongest model in the project**, providing:
+### Random Forest
 
-- **87% precision** for fraudulent transactions
-- **85% recall**
-- **86% F1-score**
-- Low RMSE of **0.021**
+Random Forest achieved:
 
-Logistic Regression achieved higher fraud recall (**92%**) but substantially lower precision (**14%**), demonstrating why accuracy alone should not be used to evaluate fraud-detection systems.
+```text
+Fraud Precision : 0.87
+Fraud Recall    : 0.85
+Fraud F1-Score  : 0.86
+RMSE            : 0.021
+```
 
----
+Based on the reported experiments, **Random Forest provided the strongest overall fraud-detection performance**.
 
-## 📊 Exploratory Data Analysis
+### Why Accuracy Alone Is Not Enough
 
-The project explored several characteristics of the transaction dataset, including:
+Logistic Regression achieved **99% overall accuracy** and **92% fraud recall**, but only **14% fraud precision**.
 
-- Distribution of legitimate vs fraudulent transactions
-- Transaction amount distribution
-- Transaction time vs amount
-- Feature correlations
-- Transaction clusters
-
-### Transaction Class Distribution
-
-<!-- Add transaction-class-distribution.png here -->
-
-![Transaction Class Distribution](Transaction Class Distribution.jpg)
-
-### Transaction Amount vs Time
-
-<!-- Add amount-vs-time.png here -->
-
-![Amount vs Time](Amount Vs Time.jpg)
+This demonstrates why accuracy alone can be misleading when evaluating models on highly imbalanced datasets.
 
 ---
 
 ## 🛠️ Technologies & Libraries
 
-### Language
-
+### Programming Language
 - Python
 
 ### Machine Learning
-
 - Scikit-learn
 - Imbalanced-learn
 
 ### Data Processing
-
 - Pandas
 - NumPy
 - SciPy
 
 ### Data Visualization
-
 - Matplotlib
 - Seaborn
 
-### Machine Learning Techniques
-
+### Techniques
+- Exploratory Data Analysis
+- Data Preprocessing
+- SMOTE Oversampling
+- Train/Test Splitting
 - Logistic Regression
 - Random Forest Classification
 - Decision Tree Classification
 - Support Vector Machine
-- SMOTE
-- Train/Test Splitting
 - Model Evaluation
 
 ---
@@ -266,40 +290,37 @@ The project explored several characteristics of the transaction dataset, includi
 
 ### Imbalanced Dataset
 
-Fraudulent transactions represent a very small proportion of credit card transactions.
+Fraudulent transactions represent only a small proportion of the dataset.
 
-SMOTE was therefore used to balance the training data before model development.
-
-### Model Evaluation
-
-High accuracy does not necessarily mean that a fraud-detection model performs well.
-
-For this reason, the project compared **precision, recall and F1-score**, particularly for the fraudulent class.
+SMOTE was therefore used to improve the representation of the minority fraud class during model training.
 
 ### False Positives vs False Negatives
 
-Fraud detection requires balancing two important errors:
+Fraud detection requires consideration of two important errors:
 
-- **False Positive:** A legitimate transaction is incorrectly classified as fraud.
-- **False Negative:** A fraudulent transaction is incorrectly classified as legitimate.
+**False Positive:**  
+A legitimate transaction is incorrectly classified as fraudulent.
 
-The appropriate balance depends on the requirements of the financial system in which the model would be deployed.
+**False Negative:**  
+A fraudulent transaction is incorrectly classified as legitimate.
+
+The balance between precision and recall therefore plays an important role when evaluating fraud-detection models.
 
 ---
 
 ## 💡 Key Learnings
 
-Through this project, I gained practical experience with:
+Through this project, I gained practical experience in:
 
 - Machine learning classification
-- Exploratory data analysis
+- Exploratory Data Analysis
 - Data preprocessing
 - Handling imbalanced datasets
 - SMOTE oversampling
-- Training and testing ML models
-- Comparing multiple classification algorithms
-- Evaluating models using precision, recall and F1-score
-- Understanding the limitations of accuracy for imbalanced datasets
+- Training and testing classification models
+- Comparing multiple machine learning algorithms
+- Evaluating models using accuracy, precision, recall and F1-score
+- Understanding the limitations of accuracy on imbalanced datasets
 - Data visualization using Matplotlib and Seaborn
 - Applying machine learning to a real-world financial problem
 
@@ -307,16 +328,16 @@ Through this project, I gained practical experience with:
 
 ## 🔮 Future Improvements
 
-Potential extensions of this project include:
+Potential extensions include:
 
-- Real-time fraud detection
-- Hyperparameter optimization
+- Hyperparameter tuning
 - Cross-validation
-- Additional ensemble-learning approaches
-- Explainable AI techniques
+- Additional ensemble-learning models
 - Improved feature engineering
 - Cost-sensitive classification
-- Automated model pipelines
+- Explainable AI techniques
+- Real-time fraud detection
+- Automated machine learning pipelines
 - Deployment as a fraud-detection API
 - Evaluation on additional transaction datasets
 
@@ -324,11 +345,11 @@ Potential extensions of this project include:
 
 ## 📄 Project Report
 
-The complete project methodology, implementation, code excerpts, experiments, and results are available in the project report:
+The complete project methodology, implementation details, code excerpts, experiments and results are available in the project report:
 
 [View Project Report](Credit_Card_fraud_Detection_Using_Machine_Learning.pdf)
 
-> **Note:** This repository currently contains the project documentation and report. The original implementation files are not currently included in the repository.
+> **Repository Note:** This repository currently contains the project documentation and report. The original implementation files are not currently included in the repository.
 
 ---
 
@@ -342,7 +363,7 @@ This project was completed as part of the **Intel Unnati Program**, providing pr
 
 - Nandana A
 - Lara Marium Jacob
-- Varsha S Panicker
+- **Varsha S Panicker**
 - Rizia Sara Prabin
 
 **Project Mentor:** Dr. Starlet Ben Alex  
@@ -350,6 +371,6 @@ This project was completed as part of the **Intel Unnati Program**, providing pr
 
 ---
 
-## 📌 Disclaimer
+## 📄 Disclaimer
 
-This project was developed for academic and educational purposes. It is not intended to be used as a production financial fraud-detection system.
+This project was developed for academic and educational purposes and is not intended for use as a production financial fraud-detection system.
